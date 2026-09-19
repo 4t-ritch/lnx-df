@@ -53,14 +53,29 @@ Borrado total del controlador de música + reajuste de altura. Autorizado en
 este hilo. Push/PR: decisión del usuario.
 
 ## Acceptance criteria
-- [ ] `rg -i "media|player_status|cached_art|MEDIA_HEIGHT|art_provider"` en
+- [x] `rg -i "media|player_status|cached_art|MEDIA_HEIGHT|art_provider"` en
       `control-center/` solo devuelve lo intencional (`.media-button` reusado
       o cero si se migró; `app.get("media")` de audio-detail renombrado o
       justificado)
-- [ ] Sin referencias a `playerctl`/`swayosd` en `control-center/`
-- [ ] `py_compile` OK, `git diff --check` limpio, daemon reiniciado sin
+  Verificado: solo `app.get("media")` (clave PipeWire `media.name`, origen
+  audio.py:195/208-209) + `.media-button` (mute per-app, regla conservada).
+  Cero `player_status/cached_art/MEDIA_HEIGHT/art_provider`.
+- [x] Sin referencias a `playerctl`/`swayosd` en `control-center/`
+  Verificado con rg: cero.
+- [x] `py_compile` OK, `git diff --check` limpio, daemon reiniciado sin
       Traceback/Error, probado sin reproductor y con reproductor corriendo
-- [ ] Los 4 pins de altura sincronizados al mismo valor final (documentado)
+  `py_compile: OK`, `diff-check: limpio`, daemon PID único 1507958 con código
+  final, log sin Traceback/Error (solo warnings preexistentes radv +
+  GtkImage-baselines, sin tocar). Con reproductor (`playerctl -l` →
+  `brave.instance2` con video): toggle muestra panel con tiles vivos, hide
+  limpio, screenshots cc-600/cc-285/cc-final. Sin reproductor: partial
+  honesto — no se mató el browser del usuario; cobertura por construcción
+  (ninguna rama restante consulta reproductores; rg prueba cero
+  playerctl/swayosd).
+- [x] Los 4 pins de altura sincronizados al mismo valor final (documentado)
+  Valor final 285: config.py `PANEL_HEIGHT=285` + hyprland.lua
+  `size={420,285}` + 3 pins app.py por constantes (set_default_size:91,
+  place_window:271, set_size_request:283). `hyprctl reload: ok`.
 
 ## Applicable checks
 `rg` residual, `py_compile`, `diff --check`, reload daemon + log, prueba viva.
@@ -90,11 +105,19 @@ Sin PR salvo pedido.
   screenshot runtime a 600 mostró gap vacío de 334px (contenido termina y=337,
   panel cerraba y=671); a 285 el panel cierra y=357 con padding inferior 19px,
   sin gap ni clip. Detail pages usan ScrolledWindow (auto-adapta).
-- [ ] T3 — Verificación acceptance completa y reporte evidencia. Mismo writer.
+- [x] T3 — Verificación acceptance completa y reporte evidencia. Mismo writer.
+  Outcome: todo acceptance verificado salvo sin-reproductor en partial
+  honesto (ver Acceptance). Cache `~/.cache/lnx-df-control-center/artwork`
+  (109MB, writer exclusivo era `cached_art_path`) eliminada.
 
 ## Progress
 - 2026-09-19: doc creado tras mapeo delegado (general). Pendiente: writer.
-- Commits: (anotar aquí)
+- 2026-09-19: T1 done — writer directo (sin subagentes).
+- 2026-09-19: T2 done — writer directo (sin subagentes).
+- 2026-09-19: T3 done — writer directo (sin subagentes).
+- Commits: 73562a1 feat(control-center): remove music controller chain (T1);
+  c35b579 feat(control-center): drop music CSS and shrink panel to 285 (T2);
+  (T3: este doc, commit abajo)
 
 ## Next step
 Lanzar single writer con T1–T3 en rama nueva desde el tip actual.
