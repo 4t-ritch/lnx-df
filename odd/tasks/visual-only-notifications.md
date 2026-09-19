@@ -11,7 +11,8 @@ Notifications del centro de comandos debe eliminarse por completo.
 
 ## Scope (archivos)
 Fuente: `/home/ritch/dotfiles/config/` — deployado: `/home/ritch/.config/`
-(archivos regulares, NO symlinks: todo cambio va en fuente + deployado).
+(verificado por inode: `~/.config/*` son dir-level symlinks a `dotfiles/config`;
+cambiar la fuente alcanza. Si algún día fueran copias reales, replicar manual).
 - `hypr/scripts/clipboard-clear.sh` (binding Super+Backspace en `hypr/hyprland.lua:496`)
 - `swaync/config.json` (bloque `scripts.lnx-control-center-history`, líneas ~51-56)
 - `control-center/log-swaync-notification` (SAVE FUNCTION a borrar)
