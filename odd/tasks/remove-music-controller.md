@@ -117,7 +117,7 @@ Sin PR salvo pedido.
 - 2026-09-19: T3 done — writer directo (sin subagentes).
 - Commits: 73562a1 feat(control-center): remove music controller chain (T1);
   c35b579 feat(control-center): drop music CSS and shrink panel to 285 (T2);
-  (T3: este doc, commit abajo)
+  9240895 docs(odd): record remove-music-controller T3 acceptance evidence (T3)
 
 ## Next step
 Lanzar single writer con T1–T3 en rama nueva desde el tip actual.
