@@ -76,14 +76,21 @@ cambio único directo, work-unit commits en feature branch. Sin PR salvo pedido.
       Done 2026-09-19: hook borrado + bloque `scripts` removido (mismo commit,
       JSON revalidado); cache truncado a 0B. Post-cambio: `notify-send` normal →
       jsonl 0B/0 líneas; `swaync-client --reload-config` exit=0, swaync vivo.
-- [ ] T3 — Borrar sección del centro: card + métodos + llamada + servicio +
+- [x] T3 — Borrar sección del centro: card + métodos + llamada + servicio +
       constante + helper + CSS + imports. Mismo writer.
+      Done 2026-09-19: `app.py` −231 (card, 16 métodos, llamada main, estado
+      63-65, refresh/apply_status params, imports huérfanos incl. `focus_app_window`
+      y `atom_icon` solo usados ahí); `services/notifications.py` y
+      `ui/molecules/notifications.py` borrados; `config.py:10` fuera; `style.css`
+      −113 (grupo `.slider-card`, bloque notificaciones, selector `:hover`
+      extra). `rg -i notification` en `control-center/` → 0 restos;
+      `py_compile` OK en `app.py` y `config.py`.
 - [ ] T4 — Verificación completa (acceptance) y reporte de evidencia. Mismo writer.
 
 ## Progress
 - 2026-09-19: doc creado tras exploración delegada (general). Pendiente: writer.
 - 2026-09-19: T1 done — `d8f5fcd feat(hypr): visual-only clipboard-clear notification via hyprctl`.
-- 2026-09-19: T2 done — commit pendiente (hook + scripts atómicos, ver abajo).
+- 2026-09-19: T2 done — `f325f66 fix(swaync): remove notification history hook and scripts block`.
 - Commits: (recorder identities aquí)
 
 ## Next step

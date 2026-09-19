@@ -7,7 +7,6 @@ PID_FILE = RUNTIME_DIR / "lnx-df-control-center.pid"
 CONFIG_HOME = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config"))
 CACHE_HOME = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache"))
 ART_CACHE = CACHE_HOME / "lnx-df-control-center" / "artwork"
-NOTIFICATION_HISTORY = CACHE_HOME / "lnx-df-control-center" / "notifications.jsonl"
 BASE = CONFIG_HOME
 AUDIO_PREF_FILE = CONFIG_HOME / "waybar" / "audio-preferences.env"
 STEP = 2

@@ -22,15 +22,10 @@ from control_center.services.audio import (
 from control_center.services.bluetooth import (
     bluetooth_rows, bluetooth_status, connect_bluetooth, set_bluetooth_enabled,
 )
-from control_center.services.hyprland import focus_app_window, hypr_monitor_width
+from control_center.services.hyprland import hypr_monitor_width
 from control_center.services.media import cached_art_path, player_status
-from control_center.services.notifications import (
-    clear_notification_history, close_notifications, notification_groups, notification_status,
-    relative_notification_time, remove_notifications_from_history,
-)
 from control_center.services.wifi import connect_wifi, set_wifi_enabled, wifi_rows, wifi_status
-from control_center.ui.atoms.widgets import icon as atom_icon, spinner_row as atom_spinner_row
-from control_center.ui.molecules.notifications import hover_reveal_action_row
+from control_center.ui.atoms.widgets import spinner_row as atom_spinner_row
 from control_center.ui.molecules.rows import detail_button_row, plain_detail_row, section_label
 from control_center.utils import format_time, snap_volume
 
@@ -60,9 +55,6 @@ class ControlCenter(Gtk.Application):
         self.media_progress = None
         self.media_time = None
         self.media_player = ""
-        self.notifications_list = None
-        self.notifications_dnd = None
-        self.expanded_notification_groups = set()
         self.art_provider = Gtk.CssProvider()
         self.media_position = 0
         self.media_length = 0
@@ -364,7 +356,6 @@ class ControlCenter(Gtk.Application):
         page.append(grid)
         page.append(self.slider_row("", "output"))
         page.append(self.media_card())
-        page.append(self.notifications_card())
         return page
 
     def tile(self, key, icon, title, subtitle, state, callback):
@@ -1246,218 +1237,6 @@ class ControlCenter(Gtk.Application):
         self.media_time.set_label(f"{format_time(target)} / {format_time(self.media_length)}")
         run_detached(["playerctl", "-p", self.media_player, "position", str(target)])
 
-    def notifications_card(self):
-        card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
-        card.add_css_class("notifications-card")
-
-        header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
-        title = Gtk.Label(label="󰂚  Notifications", xalign=0)
-        title.set_hexpand(True)
-        title.add_css_class("notifications-title")
-        self.notifications_dnd = Gtk.Button(label="󰂚")
-        self.notifications_dnd.add_css_class("mini-button")
-        self.notifications_dnd.add_css_class("icon-button")
-        self.notifications_dnd.connect("clicked", self.on_toggle_dnd)
-        clear = Gtk.Button(label="Clear")
-        clear.add_css_class("mini-button")
-        clear.connect("clicked", self.on_clear_notifications)
-        header.append(title)
-        header.append(self.notifications_dnd)
-        header.append(clear)
-
-        self.notifications_list = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
-        card.append(header)
-        card.append(self.notifications_list)
-        return card
-
-    def on_toggle_dnd(self, *_args):
-        next_dnd = not self.notifications_dnd.has_css_class("active")
-        self.set_notifications_dnd_state(next_dnd)
-        run_detached(["swaync-client", "-d", "-sw"])
-        GLib.timeout_add(110, self.refresh_notifications_async)
-
-    def on_clear_notifications(self, *_args):
-        run_detached(["swaync-client", "-C", "-sw"])
-        clear_notification_history()
-        GLib.timeout_add(250, lambda: (self.refresh_async(), False)[1])
-
-    def update_notifications_center(self, status: dict[str, bool | int | list[dict[str, str | int]]]):
-        if not self.notifications_list or not self.notifications_dnd:
-            return
-        count = int(status.get("count") or 0)
-        dnd = bool(status.get("dnd"))
-        items = status.get("items") or []
-        self.set_notifications_dnd_state(dnd)
-
-        child = self.notifications_list.get_first_child()
-        while child:
-            next_child = child.get_next_sibling()
-            self.notifications_list.remove(child)
-            child = next_child
-
-        groups = notification_groups(items if isinstance(items, list) else [], count)
-        if groups:
-            for group in groups[:4]:
-                self.notifications_list.append(self.notification_group_widget(group))
-        else:
-            self.notifications_list.append(self.notification_empty_row("No notifications"))
-
-    def set_notifications_dnd_state(self, dnd: bool):
-        if not self.notifications_dnd:
-            return
-        self.notifications_dnd.set_label("󰂛" if dnd else "󰂚")
-        if dnd:
-            self.notifications_dnd.add_css_class("active")
-        else:
-            self.notifications_dnd.remove_css_class("active")
-        return False
-
-    def refresh_notifications_async(self):
-        def worker():
-            status = notification_status()
-            GLib.idle_add(self.update_notifications_center, status)
-
-        threading.Thread(target=worker, daemon=True).start()
-        return False
-
-    def notification_group_widget(self, group: dict[str, object]):
-        items = group.get("items") or []
-        if not isinstance(items, list):
-            items = []
-        key = str(group.get("key") or "")
-        expanded = key in self.expanded_notification_groups and len(items) > 1
-        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
-        box.add_css_class("notification-row")
-        header = hover_reveal_action_row(
-            self.notification_group_content(group, expanded),
-            lambda group=group: self.on_notification_group_clicked(None, group),
-            lambda items=items: self.delete_notification_group(items),
-            "notification-group-button",
-            delete_tooltip="Delete notification group",
-        )
-        box.append(header)
-        if expanded:
-            for item in items[:5]:
-                detail = hover_reveal_action_row(
-                    self.notification_item_content(item, compact=True),
-                    lambda item=item: self.on_notification_item_clicked(None, item),
-                    lambda item=item: self.delete_notification_item(item),
-                    "notification-detail-button",
-                    "notification-detail-row",
-                    delete_tooltip="Delete notification",
-                )
-                box.append(detail)
-        return box
-
-    def notification_group_content(self, group: dict[str, object], expanded: bool):
-        items = group.get("items") or []
-        if not isinstance(items, list) or not items:
-            items = [{}]
-        latest = items[0]
-        app = str(group.get("app") or latest.get("app") or "Notification")
-        icon_name = str(group.get("icon") or "dialog-information")
-        count = len(items)
-
-        row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=9)
-        row.set_hexpand(True)
-        icon = self.notification_icon(icon_name)
-        row.append(icon)
-
-        text = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
-        text.set_hexpand(True)
-        top = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
-        app_label = Gtk.Label(label=app[:18], xalign=0)
-        app_label.add_css_class("notification-app")
-        app_label.set_ellipsize(3)
-        app_label.set_hexpand(True)
-        time_label = Gtk.Label(label=relative_notification_time(latest.get("time", "")), xalign=1)
-        time_label.add_css_class("notification-time")
-        top.append(app_label)
-        top.append(time_label)
-
-        summary = Gtk.Label(label=str(latest.get("summary") or "")[:42], xalign=0)
-        summary.add_css_class("notification-row-title")
-        summary.set_ellipsize(3)
-        summary.set_max_width_chars(38)
-        text.append(top)
-        text.append(summary)
-        row.append(text)
-
-        if count > 1:
-            badge = Gtk.Label(label=f"{'⌃' if expanded else '⌄'} {count}")
-            badge.add_css_class("notification-stack-badge")
-            row.append(badge)
-        return row
-
-    def notification_item_content(self, item: dict[str, str | int], compact: bool = False):
-        row = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
-        summary = Gtk.Label(label=str(item.get("summary") or "Notification")[:46], xalign=0)
-        summary.add_css_class("notification-row-title")
-        summary.set_ellipsize(3)
-        summary.set_max_width_chars(40)
-        row.append(summary)
-        body = str(item.get("body") or "").strip()
-        if body and not compact:
-            subtitle = Gtk.Label(label=body[:72], xalign=0)
-            subtitle.add_css_class("notification-row-body")
-            subtitle.set_ellipsize(3)
-            subtitle.set_max_width_chars(40)
-            row.append(subtitle)
-        return row
-
-    def notification_icon(self, icon_name: str):
-        return atom_icon(icon_name, size=28, css="notification-icon")
-
-    def on_notification_group_clicked(self, _button, group: dict[str, object]):
-        items = group.get("items") or []
-        key = str(group.get("key") or "")
-        if isinstance(items, list) and len(items) > 1:
-            if key in self.expanded_notification_groups:
-                self.expanded_notification_groups.remove(key)
-            else:
-                self.expanded_notification_groups.add(key)
-            self.update_notifications_center(notification_status())
-            return
-        if isinstance(items, list) and items:
-            self.on_notification_item_clicked(_button, items[0])
-
-    def on_notification_item_clicked(self, _button, item: dict[str, str | int]):
-        app = str(item.get("app") or "")
-        desktop_entry = str(item.get("desktop_entry") or "")
-        self.close_panel()
-
-        def worker():
-            time.sleep(0.25)
-            focus_app_window(app, desktop_entry)
-
-        threading.Thread(target=worker, daemon=True).start()
-
-    def delete_notification_items(self, items: list[dict[str, str | int]]):
-        ids = {str(item.get("id", "")).strip() for item in items if isinstance(item, dict) and str(item.get("id", "")).strip()}
-        if not ids:
-            return
-
-        def worker():
-            close_notifications(items)
-            remove_notifications_from_history(ids)
-            time.sleep(0.15)
-            status = notification_status()
-            GLib.idle_add(self.update_notifications_center, status)
-            GLib.idle_add(self.refresh_async)
-
-        threading.Thread(target=worker, daemon=True).start()
-
-    def delete_notification_group(self, items: list[dict[str, str | int]]):
-        self.delete_notification_items(items)
-
-    def delete_notification_item(self, item: dict[str, str | int]):
-        self.delete_notification_items([item])
-
-    def notification_empty_row(self, text: str):
-        label = Gtk.Label(label=text, xalign=0.5)
-        label.add_css_class("notification-empty")
-        return label
-
     def refresh_async(self):
         self.refresh_generation += 1
         generation = self.refresh_generation
@@ -1472,8 +1251,7 @@ class ControlCenter(Gtk.Application):
             volume = current_output_volume()
             mic_volume = current_input_volume()
             art_path = cached_art_path(media[6])
-            notifications = notification_status()
-            GLib.idle_add(self.apply_status, generation, wifi, bluetooth, audio, mic, media, volume, mic_volume, art_path, notifications)
+            GLib.idle_add(self.apply_status, generation, wifi, bluetooth, audio, mic, media, volume, mic_volume, art_path)
         threading.Thread(target=worker, daemon=True).start()
 
     def periodic_refresh(self):
@@ -1500,7 +1278,7 @@ class ControlCenter(Gtk.Application):
             self.media_time.set_label("0:00 / 0:00")
         self.updating_media_progress = False
 
-    def apply_status(self, generation, wifi, bluetooth, audio, mic, media, volume, mic_volume, art_path, notifications):
+    def apply_status(self, generation, wifi, bluetooth, audio, mic, media, volume, mic_volume, art_path):
         if generation != self.refresh_generation:
             return False
         self.apply_feature_visual_state("wifi", *wifi)
@@ -1518,7 +1296,6 @@ class ControlCenter(Gtk.Application):
         self.media_last_tick = time.monotonic()
         self.set_media_art(art_path)
         self.update_media_progress()
-        self.update_notifications_center(notifications)
         self.set_volume_value(volume, apply=False)
         self.set_mic_value(mic_volume, apply=False)
         return False
