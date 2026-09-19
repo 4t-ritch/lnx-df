@@ -102,6 +102,7 @@ cambio único directo, work-unit commits en feature branch. Sin PR salvo pedido.
 - 2026-09-19: T2 done — `f325f66 fix(swaync): remove notification history hook and scripts block`.
 - 2026-09-19: T3 done — `853d331 feat(control-center): remove notifications section and history service`.
 - 2026-09-19: T4 done — aceptación completa en vivo, sin fallos.
+- 2026-09-19: fix mini-button base — `61ed11e fix(control-center): restore mini-button base selector` (commit 853d331 había renombrado `.mini-button` a `.embedded-list` en style.css:201; restaurado bloque pill original, un único `.embedded-list`, sin reintroducir CSS de notificaciones; daemon reiniciado PID único, log sin Traceback/Error).
 - Commits: (recorder identities aquí)
 
 ## Next step
