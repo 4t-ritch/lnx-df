@@ -25,8 +25,3 @@ def clamp(value: int, low: int = 0, high: int = 100) -> int:
 
 def snap_volume(value: float, step: int = 2) -> int:
     return clamp(round(int(value) / step) * step)
-
-
-def format_time(seconds: int) -> str:
-    minutes, seconds = divmod(max(0, seconds), 60)
-    return f"{minutes}:{seconds:02d}"

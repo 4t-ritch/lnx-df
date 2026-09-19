@@ -2,10 +2,9 @@ import re
 import signal
 import threading
 import time
-from pathlib import Path
 
 from control_center.config import (
-    APP_ID, BASE, LAYER_NAMESPACE, MEDIA_HEIGHT, PANEL_ANIMATION_MS, PANEL_FALLBACK_X,
+    APP_ID, BASE, LAYER_NAMESPACE, PANEL_ANIMATION_MS, PANEL_FALLBACK_X,
     PANEL_HEIGHT, PANEL_HORIZONTAL_DECORATION, PANEL_RIGHT_MARGIN, PANEL_TOP_MARGIN,
     PANEL_WIDTH, STEP,
 )
@@ -23,11 +22,10 @@ from control_center.services.bluetooth import (
     bluetooth_rows, bluetooth_status, connect_bluetooth, set_bluetooth_enabled,
 )
 from control_center.services.hyprland import hypr_monitor_width
-from control_center.services.media import cached_art_path, player_status
 from control_center.services.wifi import connect_wifi, set_wifi_enabled, wifi_rows, wifi_status
 from control_center.ui.atoms.widgets import spinner_row as atom_spinner_row
 from control_center.ui.molecules.rows import detail_button_row, plain_detail_row, section_label
-from control_center.utils import format_time, snap_volume
+from control_center.utils import snap_volume
 
 class ControlCenter(Gtk.Application):
     def __init__(self, start_hidden: bool = False):
@@ -49,21 +47,9 @@ class ControlCenter(Gtk.Application):
         self.feature_switch_icons = {}
         self.feature_switch_statuses = {}
         self.updating_feature_switches = set()
-        self.media_title = None
-        self.media_subtitle = None
-        self.media_play = None
-        self.media_progress = None
-        self.media_time = None
-        self.media_player = ""
-        self.art_provider = Gtk.CssProvider()
-        self.media_position = 0
-        self.media_length = 0
-        self.media_playing = False
-        self.media_last_tick = time.monotonic()
         self.updating_volume = False
         self.updating_mic = False
         self.updating_mic_switch = False
-        self.updating_media_progress = False
         self.back_button = None
         self.header_title = None
         self.stack = None
@@ -96,7 +82,6 @@ class ControlCenter(Gtk.Application):
         signal.signal(signal.SIGTERM, self.on_exit_signal)
         signal.signal(signal.SIGINT, self.on_exit_signal)
         self.load_css()
-        Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(), self.art_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 1)
 
         self.window = Gtk.ApplicationWindow(application=app)
         self.window.set_title("Control Center")
@@ -113,7 +98,6 @@ class ControlCenter(Gtk.Application):
         if not self.layer_shell_enabled:
             self.window.set_resizable(False)
         self.window.set_child(self.build_ui())
-        GLib.timeout_add(1000, self.tick_media_progress)
         GLib.timeout_add_seconds(5, self.periodic_refresh)
         self.refresh_async()
         if not self.start_hidden:
@@ -355,7 +339,6 @@ class ControlCenter(Gtk.Application):
         grid.attach(self.split_tile("mic", "", "Mic", "Loading", "off", self.on_mic_tile_toggle, self.show_mic_detail_page, "Mute / unmute microphone", "Open microphone settings"), 1, 1, 1, 1)
         page.append(grid)
         page.append(self.slider_row("", "output"))
-        page.append(self.media_card())
         return page
 
     def tile(self, key, icon, title, subtitle, state, callback):
@@ -1175,68 +1158,6 @@ class ControlCenter(Gtk.Application):
         if apply:
             set_input_volume(snapped)
 
-    def media_card(self):
-        overlay = Gtk.Overlay()
-        overlay.add_css_class("media-card")
-        overlay.set_size_request(-1, MEDIA_HEIGHT)
-        overlay.set_vexpand(False)
-        content = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=7)
-        content.add_css_class("media-content")
-        content.set_size_request(-1, MEDIA_HEIGHT)
-        content.set_vexpand(False)
-        overlay.set_child(content)
-        self.media_title = Gtk.Label(label="Loading media", xalign=0)
-        self.media_title.add_css_class("media-title")
-        self.media_title.set_ellipsize(3)
-        self.media_subtitle = Gtk.Label(label="", xalign=0)
-        self.media_subtitle.add_css_class("media-subtitle")
-        self.media_subtitle.set_ellipsize(3)
-        time_row = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        self.media_time = Gtk.Label(label="0:00 / 0:00", xalign=1)
-        self.media_time.add_css_class("media-time")
-        self.media_time.set_hexpand(True)
-        time_row.append(self.media_time)
-        self.media_progress = Gtk.Scale.new_with_range(Gtk.Orientation.HORIZONTAL, 0, 100, 1)
-        self.media_progress.set_draw_value(False)
-        self.media_progress.set_sensitive(True)
-        self.media_progress.set_hexpand(True)
-        self.media_progress.connect("value-changed", self.on_media_seek)
-        controls = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=12)
-        controls.add_css_class("media-controls")
-        controls.set_halign(Gtk.Align.CENTER)
-        for label, action in [("", "prev"), ("", "play-pause"), ("", "next")]:
-            btn = Gtk.Button(label=label)
-            btn.add_css_class("media-button")
-            btn.connect("clicked", self.on_media_action, action)
-            controls.append(btn)
-            if action == "play-pause":
-                self.media_play = btn
-        content.append(self.media_title)
-        content.append(self.media_subtitle)
-        spacer = Gtk.Box()
-        spacer.set_vexpand(True)
-        content.append(spacer)
-        content.append(time_row)
-        content.append(self.media_progress)
-        content.append(controls)
-        return overlay
-
-    def on_media_action(self, _button, action):
-        if self.media_player:
-            run_detached(["swayosd-client", "--player", self.media_player, "--playerctl", action])
-        else:
-            run_detached(["swayosd-client", "--playerctl", action])
-        GLib.timeout_add(350, lambda: (self.refresh_async(), False)[1])
-
-    def on_media_seek(self, scale):
-        if self.updating_media_progress or not self.media_player or self.media_length <= 0:
-            return
-        target = int(scale.get_value() / 100 * self.media_length)
-        self.media_position = target
-        self.media_last_tick = time.monotonic()
-        self.media_time.set_label(f"{format_time(target)} / {format_time(self.media_length)}")
-        run_detached(["playerctl", "-p", self.media_player, "position", str(target)])
-
     def refresh_async(self):
         self.refresh_generation += 1
         generation = self.refresh_generation
@@ -1247,78 +1168,25 @@ class ControlCenter(Gtk.Application):
             bluetooth = bluetooth_status()
             audio = audio_status()
             mic = mic_status()
-            media = player_status()
             volume = current_output_volume()
             mic_volume = current_input_volume()
-            art_path = cached_art_path(media[6])
-            GLib.idle_add(self.apply_status, generation, wifi, bluetooth, audio, mic, media, volume, mic_volume, art_path)
+            GLib.idle_add(self.apply_status, generation, wifi, bluetooth, audio, mic, volume, mic_volume)
         threading.Thread(target=worker, daemon=True).start()
 
     def periodic_refresh(self):
         self.refresh_async()
         return True
 
-    def tick_media_progress(self):
-        if self.media_playing and self.media_length > 0:
-            now = time.monotonic()
-            elapsed = max(0, int(now - self.media_last_tick))
-            if elapsed:
-                self.media_position = min(self.media_length, self.media_position + elapsed)
-                self.media_last_tick = now
-                self.update_media_progress()
-        return True
-
-    def update_media_progress(self):
-        self.updating_media_progress = True
-        if self.media_length > 0:
-            self.media_progress.set_value(min(100, self.media_position / self.media_length * 100))
-            self.media_time.set_label(f"{format_time(self.media_position)} / {format_time(self.media_length)}")
-        else:
-            self.media_progress.set_value(0)
-            self.media_time.set_label("0:00 / 0:00")
-        self.updating_media_progress = False
-
-    def apply_status(self, generation, wifi, bluetooth, audio, mic, media, volume, mic_volume, art_path):
+    def apply_status(self, generation, wifi, bluetooth, audio, mic, volume, mic_volume):
         if generation != self.refresh_generation:
             return False
         self.apply_feature_visual_state("wifi", *wifi)
         self.apply_feature_visual_state("bluetooth", *bluetooth)
         self.apply_feature_visual_state("audio", *audio)
         self.apply_feature_visual_state("mic", *mic)
-        title, subtitle, icon, position, length, playing, _art_url, player = media
-        self.media_title.set_label(title)
-        self.media_subtitle.set_label(subtitle)
-        self.media_play.set_label(icon)
-        self.media_player = player
-        self.media_position = position
-        self.media_length = length
-        self.media_playing = playing
-        self.media_last_tick = time.monotonic()
-        self.set_media_art(art_path)
-        self.update_media_progress()
         self.set_volume_value(volume, apply=False)
         self.set_mic_value(mic_volume, apply=False)
         return False
-
-    def set_media_art(self, art_path: str):
-        if art_path:
-            uri = Path(art_path).resolve().as_uri()
-            css = f'''
-.media-card {{
-  background-image: linear-gradient(90deg, rgba(0,0, 0, 0.42), rgba(4, 11, 10, 0.50)), url("{uri}");
-  background-size: cover;
-  background-position: center;
-  border: 1px solid #ffffff;
-}}
-'''
-        else:
-            css = '''
-.media-card {
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  background-image: linear-gradient(90deg, rgba(4, 11, 10, 0.92), rgba(4, 11, 10, 0.72));
-}
-'''
-        self.art_provider.load_from_string(css)
 
     def open_menu(self, relative_script: str, *args: str):
         self.open_command([str(BASE / relative_script), *args])
