@@ -2,20 +2,12 @@
 set -euo pipefail
 
 notify_ok() {
-  if command -v notify-send >/dev/null 2>&1; then
-    notify-send -a 'Clipboard' 'Clipboard cleared' 'Se limpió todo el historial de cliphist.'
-    return
-  fi
-
+  # Visual-only: hyprctl bypasses swaync, so the receive hook never fires.
   hyprctl notify 1 2500 'rgb(a6e3a1)' 'Clipboard history cleared'
 }
 
 notify_error() {
-  if command -v notify-send >/dev/null 2>&1; then
-    notify-send -a 'Clipboard' 'Clipboard error' 'cliphist no está instalado.'
-    return
-  fi
-
+  # Visual-only: hyprctl bypasses swaync, so the receive hook never fires.
   hyprctl notify 1 3500 'rgb(ff6666)' 'cliphist is not installed'
 }
 
