@@ -85,12 +85,22 @@ cambio único directo, work-unit commits en feature branch. Sin PR salvo pedido.
       −113 (grupo `.slider-card`, bloque notificaciones, selector `:hover`
       extra). `rg -i notification` en `control-center/` → 0 restos;
       `py_compile` OK en `app.py` y `config.py`.
-- [ ] T4 — Verificación completa (acceptance) y reporte de evidencia. Mismo writer.
+- [x] T4 — Verificación completa (acceptance) y reporte de evidencia. Mismo writer.
+      Done 2026-09-19: `rg -i notification` en `control-center/` → 0 restos;
+      `py_compile app.py` OK; `swaync-client --reload-config` exit=0;
+      daemon reiniciado con código nuevo (PID único, log sin Traceback/Error —
+      solo aviso ambiental `radv`/GtkImage preexistentes); script de
+      Super+Backspace vivo exit=0 + `hyprctl ok`, jsonl 0B/0 líneas;
+      `notify-send` normal vivo → jsonl 0B; toggle Super+N vivo exit=0, daemon
+      sigue vivo. Bindings 496/691 intactos. Mirrors fuente↔deployado idénticos
+      (las rutas son symlinks dir-level, no copias: verificado por inodo).
 
 ## Progress
 - 2026-09-19: doc creado tras exploración delegada (general). Pendiente: writer.
 - 2026-09-19: T1 done — `d8f5fcd feat(hypr): visual-only clipboard-clear notification via hyprctl`.
 - 2026-09-19: T2 done — `f325f66 fix(swaync): remove notification history hook and scripts block`.
+- 2026-09-19: T3 done — `853d331 feat(control-center): remove notifications section and history service`.
+- 2026-09-19: T4 done — aceptación completa en vivo, sin fallos.
 - Commits: (recorder identities aquí)
 
 ## Next step
