@@ -80,8 +80,16 @@ Sin PR salvo pedido.
   importador; utils.py sin format_time, snap_volume conservado; Path import
   removido por quedar sin uso). `py_compile: OK`, `diff --check: clean`.
   Residuales py: cero. Pendiente CSS + altura en T2.
-- [ ] T2 — CSS (bloque música menos `.media-button` o migración del uso en
+- [x] T2 — CSS (bloque música menos `.media-button` o migración del uso en
       :892) + `PANEL_HEIGHT` + verificación pins sincronizados. Mismo writer.
+  Outcome: style.css sin `.media-card/.media-content/.media-title/
+  media-subtitle/.media-time/.media-controls`; `.media-button` CONSERVADA con
+  comentario (reusada por mute per-app audio-detail app.py:875); pins
+  sincronizados en 285 (config.py PANEL_HEIGHT + hyprland.lua size={420,285};
+  los 3 de app.py usan las constantes, sin tocar). DESVÍO del candidato 600:
+  screenshot runtime a 600 mostró gap vacío de 334px (contenido termina y=337,
+  panel cerraba y=671); a 285 el panel cierra y=357 con padding inferior 19px,
+  sin gap ni clip. Detail pages usan ScrolledWindow (auto-adapta).
 - [ ] T3 — Verificación acceptance completa y reporte evidencia. Mismo writer.
 
 ## Progress

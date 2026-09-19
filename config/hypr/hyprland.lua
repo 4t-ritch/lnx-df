@@ -732,7 +732,7 @@ hl.window_rule({
     },
     float = true,
     pin = true,
-    size = { 420, 760 },
+    size = { 420, 285 },
     move = { 1470, 42 },
 })
 

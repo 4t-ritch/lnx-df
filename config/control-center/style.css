@@ -145,43 +145,7 @@ scale highlight {
   font-weight: 800;
 }
 
-.media-card {
-  min-height: 150px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.92);
-}
-
-.media-content {
-  padding: 10px 12px;
-  border-radius: 20px;
-  background: linear-gradient(90deg, rgba(20, 20, 20, 0.86), rgba(20, 20, 20, 0.54));
-}
-
-.media-card scale trough {
-  min-height: 6px;
-}
-
-.media-title {
-  font-size: 14px;
-  font-weight: 900;
-}
-
-.media-subtitle {
-  font-size: 12px;
-  opacity: 0.72;
-}
-
-.media-time {
-  font-size: 11px;
-  font-weight: 800;
-  opacity: 0.72;
-}
-
-.media-controls {
-  margin-top: 2px;
-}
-
+/* Kept: reused by per-app mute button in audio detail (app.py). */
 .media-button {
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.10);
