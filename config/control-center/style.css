@@ -198,7 +198,7 @@ scale highlight {
   background: rgba(255, 255, 255, 0.16);
 }
 
-.embedded-list {
+.mini-button {
   min-height: 26px;
   padding: 3px 8px;
   border-radius: 999px;
