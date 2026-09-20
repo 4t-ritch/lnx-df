@@ -3,12 +3,7 @@
   "theme": {
     "name": "system"
   },
-  "plugins": [
-    "/home/ritch/.config/opencode/tui-plugins/subagent-statusline-v2.tsx",
-    "/home/ritch/.config/opencode/tui-plugins/gentle-logo.tsx",
-    "/home/ritch/.config/opencode/tui-plugins/hostname-badge.tsx",
-    "/home/ritch/.config/opencode/tui-plugins/codex-usage.tsx"
-  ],
+  "plugins": [],
   "diffs": {
     "wrap": "word"
   },
