@@ -3,8 +3,12 @@ import { Plugin } from "@opencode/plugin/tui"
 import { createSignal } from "solid-js"
 
 // Codex subscription usage sidebar block (V2 TUI plugin).
-// Credential is env-based (CODEX_USAGE_TOKEN); presence is checked, the value
-// itself is only used as an Authorization header and never logged or rendered.
+// Credential: CODEX_USAGE_TOKEN env var (independent token, presence-checked;
+//   sent only as an Authorization header, never logged or rendered).
+// Refresh: 10s fetch timeout, 5-minute cache throttle, 60s UI tick for the
+//   reset countdown; failures keep the last snapshot and mark it stale.
+// Sidebar: rendered via the `sidebar.content` slot; V2 offers no
+//   between-Context-and-MCP insertion point, so order is host-controlled.
 const TOKEN_ENV_VAR = "CODEX_USAGE_TOKEN"
 const USAGE_URL = "https://chatgpt.com/backend-api/wham/usage"
 const USER_AGENT = "opencode-codex-usage"
