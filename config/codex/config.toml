@@ -26,6 +26,24 @@ trust_level = "trusted"
 [projects."/home/ritch/okaimono/bknd"]
 trust_level = "trusted"
 
+[projects."/home/ritch/dev/atomiracle/ketai"]
+trust_level = "trusted"
+
+[projects."/home/ritch/dev/atomiracle/okaimono/bknd"]
+trust_level = "trusted"
+
+[projects."/home/ritch/dev/atomiracle/okaimono/front"]
+trust_level = "trusted"
+
+[projects."/home/ritch/dev/atomiracle/ikitai"]
+trust_level = "trusted"
+
+[projects."/home/ritch/dev/atomiracle/ikitai/bknd"]
+trust_level = "trusted"
+
+[projects."/home/ritch/dev/atomiracle/ikitai/front"]
+trust_level = "trusted"
+
 [hooks.state]
 
 [hooks.state."/home/ritch/.codex/hooks.json:pre_tool_use:0:0"]
@@ -41,7 +59,7 @@ trusted_hash = "sha256:05ac20fdc5ed527b43286ca21391be6ed76b33814d7978510002cdf8a
 trusted_hash = "sha256:7be233630ce39df4f497d7cf686ad53318e7763e5e9ecd23ce758767ff241974"
 
 [hooks.state."/home/ritch/.codex/hooks.json:session_start:0:0"]
-trusted_hash = "sha256:ee482040d324265de9bff0ee883aab2dad7b181a4a7e07c0250cfebe0dc32dd6"
+trusted_hash = "sha256:328b432619135a27298c653f43208f48d92d9913853b3c452091b5ba25650e16"
 
 [hooks.state."/home/ritch/.codex/hooks.json:session_start:1:0"]
 trusted_hash = "sha256:ee482040d324265de9bff0ee883aab2dad7b181a4a7e07c0250cfebe0dc32dd6"

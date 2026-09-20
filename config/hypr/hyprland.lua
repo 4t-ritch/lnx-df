@@ -678,7 +678,7 @@ hl.bind("CTRL" .. " + " .. "semicolon", hl.dsp.exec_cmd("true"))
 
 -- screenshots
 
-hl.bind("ALT" .. " + " .. "S", hl.dsp.exec_cmd("flameshot gui"))
+hl.bind("ALT" .. " + " .. "H", hl.dsp.exec_cmd("flameshot gui"))
 
 hl.bind("Print", hl.dsp.exec_cmd("flameshot gui"))
 

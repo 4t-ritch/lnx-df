@@ -4,6 +4,7 @@
 //
 // Active only when running inside tmux, Zellij, or native Ghostty (and NOT under herdr).
 
+import { Plugin } from "@opencode/plugin";
 import { spawn } from "node:child_process";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -52,22 +53,26 @@ function stateFromSessionStatus(status) {
   }
 }
 
-export const TmuxAgentStatePlugin = async () => {
-  if (!enabled()) return {};
+export default Plugin.define({
+  id: "gentle-ai.tmux-agent-state",
+  setup(ctx) {
+    if (!enabled()) {
+      return async () => {};
+    }
 
-  return {
-    "chat.message": async () => {
-      await report("working");
-    },
-    event: async ({ event }) => {
-      const type = event?.type;
-      const properties = event?.properties ?? {};
+    const abort = new AbortController();
 
-      switch (type) {
+    // Handle OpenCode events without blocking plugin setup.
+    void (async () => {
+      for await (const event of ctx.event.subscribe({ signal: abort.signal })) {
+        const type = event?.type;
+        const properties = event?.properties ?? {};
+
+        switch (type) {
         case "session.status": {
           const state = stateFromSessionStatus(properties.status);
-          if (state) await report(state);
-          break;
+          if (state) report(state);
+            break;
         }
         case "tool.execute.before":
         case "tool.execute.after":
@@ -75,25 +80,30 @@ export const TmuxAgentStatePlugin = async () => {
         case "question.replied":
         case "question.rejected":
         case "session.compacted":
-          await report("working");
-          break;
+            void report("working");
+            break;
         case "permission.asked":
         case "question.asked":
-          await report("blocked");
-          break;
+            void report("blocked");
+            break;
         // session.error fires for recoverable errors too (e.g. editing a file
         // before reading it) that the agent retries and works through. It is NOT
         // "waiting on the user", so we ignore it — real lifecycle events
         // (session.idle / permission.asked) drive the state instead.
         case "session.idle":
-          await report("idle");
-          break;
+            void report("idle");
+            break;
         case "session.deleted":
-          await report("idle");
-          break;
+            void report("idle");
+            break;
         default:
-          break;
+            break;
+        }
       }
-    },
-  };
-};
+    })().catch(() => {});
+
+    return async () => {
+      abort.abort();
+    };
+  },
+});

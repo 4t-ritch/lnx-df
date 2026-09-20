@@ -1,7 +1,9 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
+SETUVAR --export ANDROID_HOME:/mnt/todo/android_sdk
+SETUVAR --export ANDROID_SDK_ROOT:/mnt/todo/android_sdk
 SETUVAR --export JAVA_HOME:/home/ritch/\x2elocal/opt/android\x2dstudio/jbr
 SETUVAR --export OPENPENCIL_DESKTOP_BIN:/home/ritch/\x2elocal/opt/openpencil/openpencil\x2ddesktop
 SETUVAR --export --path PATH:/home/ritch/\x2elocal/bin\x1e/home/ritch/\x2elocal/bin\x1e/home/ritch/\x2eopencode/bin\x1e/home/ritch/\x2ecargo/bin\x1e/usr/local/sbin\x1e/usr/local/bin\x1e/usr/bin\x1e/home/ritch/\x2elocal/share/flatpak/exports/bin\x1e/var/lib/flatpak/exports/bin\x1e/usr/bin/site_perl\x1e/usr/bin/vendor_perl\x1e/usr/bin/core_perl
 SETUVAR __fish_initialized:4300
-SETUVAR fish_user_paths:/home/ritch/\x2elocal/share/mise/shims\x1e/home/ritch/\x2elocal/bin\x1e/home/ritch/\x2eopencode/bin
+SETUVAR fish_user_paths:/mnt/todo/android_sdk/emulator\x1e/mnt/todo/android_sdk/platform\x2dtools\x1e/mnt/todo/android_sdk/cmdline\x2dtools/latest/bin\x1e/home/ritch/\x2elocal/share/mise/shims\x1e/home/ritch/\x2elocal/bin\x1e/home/ritch/\x2eopencode/bin\x1e/opt/rocm/bin
