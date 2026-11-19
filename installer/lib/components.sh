@@ -595,6 +595,11 @@ install_dotfiles() {
   ensure_symlink "${CONFIG_ROOT}/tmux/tmux.conf" "${HOME}/.config/tmux/tmux.conf"
   ensure_symlink "${HOME}/.config/tmux/tmux.conf" "${HOME}/.tmux.conf"
 
+  ensure_symlink "${CONFIG_ROOT}/claude/statusline.py" "${HOME}/.claude/statusline.py"
+  ensure_symlink "${CONFIG_ROOT}/claude/themes/ritch-rose.json" "${HOME}/.claude/themes/ritch-rose.json"
+  ensure_symlink "${CONFIG_ROOT}/codex/statusline.py" "${HOME}/.codex/statusline.py"
+  ensure_symlink "${CONFIG_ROOT}/codex/themes/ritch-rose.tmTheme" "${HOME}/.codex/themes/ritch-rose.tmTheme"
+
   install_arch_aur_guard
 }
 
@@ -609,6 +614,10 @@ uninstall_dotfiles() {
   remove_repo_symlink "${INSTALL_USER_HOME}/.config/tmux/tmux.conf"
   remove_repo_symlink "${INSTALL_USER_HOME}/.config/kitty"
   remove_repo_symlink "${INSTALL_USER_HOME}/.config/tmux"
+  remove_repo_symlink "${INSTALL_USER_HOME}/.claude/statusline.py"
+  remove_repo_symlink "${INSTALL_USER_HOME}/.claude/themes/ritch-rose.json"
+  remove_repo_symlink "${INSTALL_USER_HOME}/.codex/statusline.py"
+  remove_repo_symlink "${INSTALL_USER_HOME}/.codex/themes/ritch-rose.tmTheme"
   uninstall_arch_aur_guard
 }
 
@@ -1141,6 +1150,10 @@ check_dotfiles() {
   check_symlink_target "${HOME}/.config/kitty/themes" "${CONFIG_ROOT}/kitty/themes" || failures=$((failures + 1))
   check_symlink_target "${HOME}/.config/tmux/tmux.conf" "${CONFIG_ROOT}/tmux/tmux.conf" || failures=$((failures + 1))
   check_symlink_target "${HOME}/.tmux.conf" "${HOME}/.config/tmux/tmux.conf" || failures=$((failures + 1))
+  check_symlink_target "${HOME}/.claude/statusline.py" "${CONFIG_ROOT}/claude/statusline.py" || failures=$((failures + 1))
+  check_symlink_target "${HOME}/.claude/themes/ritch-rose.json" "${CONFIG_ROOT}/claude/themes/ritch-rose.json" || failures=$((failures + 1))
+  check_symlink_target "${HOME}/.codex/statusline.py" "${CONFIG_ROOT}/codex/statusline.py" || failures=$((failures + 1))
+  check_symlink_target "${HOME}/.codex/themes/ritch-rose.tmTheme" "${CONFIG_ROOT}/codex/themes/ritch-rose.tmTheme" || failures=$((failures + 1))
   check_arch_aur_guard || failures=$((failures + 1))
 
   (( failures == 0 ))

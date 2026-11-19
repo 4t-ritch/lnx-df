@@ -37,14 +37,14 @@ command -v tmux >/dev/null 2>&1 || exit 0
 # then common Linux players. If no sound player works, fall back to a terminal
 # BEL written to /dev/tty so tmux/kitty can still ring.
 terminal_bell() {
-  [ "${AGENT_TERMINAL_BELL:-1}" = "0" ] && return 0
+  [ "${AGENT_TERMINAL_BELL:-0}" = "0" ] && return 0
   if [ -w /dev/tty ]; then
     printf '\a' >/dev/tty 2>/dev/null || true
   fi
 }
 
 play() {
-  [ "${AGENT_SOUND:-1}" = "0" ] && return 0
+  [ "${AGENT_SOUND:-0}" = "0" ] && return 0
   if [ -f "$1" ]; then
     if command -v afplay >/dev/null 2>&1; then (afplay "$1" >/dev/null 2>&1 &); return 0
     elif command -v paplay >/dev/null 2>&1; then (paplay "$1" >/dev/null 2>&1 &); return 0

@@ -53,19 +53,24 @@ function yt --description 'yt-dlp downloader with progress and audio/video modes
         else if string match -qr '^(ERROR:|WARNING:|ERROR |WARNING )' -- $line
           printf '\n%s\n' "$line" >&2
         end
+
+        if string match -qir '(cookies-from-browser|sign[ -]?in|log[ -]?in|authentication.*required|requires? authentication)' -- $line
+          set -g __yt_auth_required 1
+        end
       end
 
     return $pipestatus[1]
   end
 
+  set -l yt_args
   if set -q _flag_video
-    __yt_run_with_custom_progress \
+    set yt_args \
       -f "bestvideo*+bestaudio/best" \
       --embed-metadata \
       -o "%(artist,creator,uploader)s - %(title)s.%(ext)s" \
       $argv
   else
-    __yt_run_with_custom_progress \
+    set yt_args \
       -f "bestaudio/best" -x \
       --audio-format vorbis \
       --audio-quality 0 \
@@ -76,7 +81,15 @@ function yt --description 'yt-dlp downloader with progress and audio/video modes
       $argv
   end
 
+  set -g __yt_auth_required 0
+  __yt_run_with_custom_progress $yt_args
   set -l yt_status $status
+  if test $yt_status -ne 0; and test $__yt_auth_required -eq 1
+    set -g __yt_auth_required 0
+    __yt_run_with_custom_progress --cookies-from-browser brave $yt_args
+    set yt_status $status
+  end
+  set -e -g __yt_auth_required
   functions -e __yt_render_progress __yt_run_with_custom_progress
 
   if test $yt_status -ne 0

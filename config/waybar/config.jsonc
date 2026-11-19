@@ -22,14 +22,15 @@
       "custom/power"
     ],
     "hyprland/window": {
-      "format": "{class}",
+      "format": "<span text_transform='lowercase'>{class}</span>",
       "rewrite": {
-        "^brave-aalgkepfhigihlhelhgejbkkmmbgbpmb-Profile_3$": "Webex",
-        "^brave-chatgpt\\.com__-Default$": "ChatGPT",
-        "^lnx-df-webapp-chatgpt$": "ChatGPT",
-        "^brave-hnpfjngllnobngcgfapefoaidbinmjnm-Default$": "WhatsApp",
-        "^brave-web\\.whatsapp\\.com__-Default$": "WhatsApp",
-        "^lnx-df-webapp-whatsapp$": "WhatsApp"
+        "^<span text_transform='lowercase'>brave-aalgkepfhigihlhelhgejbkkmmbgbpmb-Profile_3</span>$": "<span text_transform='lowercase'>Webex</span>",
+        "^<span text_transform='lowercase'>brave-chatgpt\\.com__-Default</span>$": "<span text_transform='lowercase'>ChatGPT</span>",
+        "^<span text_transform='lowercase'>lnx-df-webapp-chatgpt</span>$": "<span text_transform='lowercase'>ChatGPT</span>",
+        "^<span text_transform='lowercase'>brave-hnpfjngllnobngcgfapefoaidbinmjnm-Default</span>$": "<span text_transform='lowercase'>WhatsApp</span>",
+        "^<span text_transform='lowercase'>brave-web\\.whatsapp\\.com__-Default</span>$": "<span text_transform='lowercase'>WhatsApp</span>",
+        "^<span text_transform='lowercase'>lnx-df-webapp-whatsapp</span>$": "<span text_transform='lowercase'>WhatsApp</span>",
+        "^<span text_transform='lowercase'>org\\.gnome\\.Nautilus</span>$": "<span text_transform='lowercase'>Nautilus</span>"
       },
       "align": 0.5,
       "justify": "center",
@@ -111,14 +112,15 @@
       "custom/power"
     ],
     "hyprland/window": {
-      "format": "{class}",
+      "format": "<span text_transform='lowercase'>{class}</span>",
       "rewrite": {
-        "^brave-aalgkepfhigihlhelhgejbkkmmbgbpmb-Profile_3$": "Webex",
-        "^brave-chatgpt\\.com__-Default$": "ChatGPT",
-        "^lnx-df-webapp-chatgpt$": "ChatGPT",
-        "^brave-hnpfjngllnobngcgfapefoaidbinmjnm-Default$": "WhatsApp",
-        "^brave-web\\.whatsapp\\.com__-Default$": "WhatsApp",
-        "^lnx-df-webapp-whatsapp$": "WhatsApp"
+        "^<span text_transform='lowercase'>brave-aalgkepfhigihlhelhgejbkkmmbgbpmb-Profile_3</span>$": "<span text_transform='lowercase'>Webex</span>",
+        "^<span text_transform='lowercase'>brave-chatgpt\\.com__-Default</span>$": "<span text_transform='lowercase'>ChatGPT</span>",
+        "^<span text_transform='lowercase'>lnx-df-webapp-chatgpt</span>$": "<span text_transform='lowercase'>ChatGPT</span>",
+        "^<span text_transform='lowercase'>brave-hnpfjngllnobngcgfapefoaidbinmjnm-Default</span>$": "<span text_transform='lowercase'>WhatsApp</span>",
+        "^<span text_transform='lowercase'>brave-web\\.whatsapp\\.com__-Default</span>$": "<span text_transform='lowercase'>WhatsApp</span>",
+        "^<span text_transform='lowercase'>lnx-df-webapp-whatsapp</span>$": "<span text_transform='lowercase'>WhatsApp</span>",
+        "^<span text_transform='lowercase'>org\\.gnome\\.Nautilus</span>$": "<span text_transform='lowercase'>Nautilus</span>"
       },
       "align": 0.5,
       "justify": "center",

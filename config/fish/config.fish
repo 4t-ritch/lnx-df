@@ -121,3 +121,6 @@ end
 set -g PATH $_clean_path
 set -e _clean_path
 set -e _p
+
+# MiniMax Code CLI
+fish_add_path -g "/home/ritch/.minimax-code/bin"

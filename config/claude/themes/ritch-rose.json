@@ -1,0 +1,33 @@
+{
+  "name": "ritch-rose",
+  "base": "dark",
+  "overrides": {
+    "autoAccept": "#D185AB",
+    "bashBorder": "#C2A87E",
+    "bashMessageBackgroundColor": "#151316",
+    "claude": "#D185AB",
+    "claudeShimmer": "#E0A3C2",
+    "diffAdded": "#29332F",
+    "diffAddedDimmed": "#303A35",
+    "diffAddedWord": "#465B50",
+    "diffRemoved": "#382B30",
+    "diffRemovedDimmed": "#403237",
+    "diffRemovedWord": "#62454E",
+    "error": "#D28992",
+    "inactive": "#6F636B",
+    "memoryBackgroundColor": "#1A171C",
+    "merged": "#9FBFAA",
+    "permission": "#D185AB",
+    "planMode": "#93A9C4",
+    "promptBorder": "#D185AB",
+    "remember": "#C2A87E",
+    "selectionBg": "#3A2A33",
+    "subtle": "#6F636B",
+    "success": "#9FBFAA",
+    "suggestion": "#E0A3C2",
+    "text": "#C9C0C5",
+    "userMessageBackground": "#1D181C",
+    "userMessageBackgroundHover": "#2A2026",
+    "warning": "#C2A87E"
+  }
+}
