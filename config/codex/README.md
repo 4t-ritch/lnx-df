@@ -67,7 +67,8 @@ stays as the fallback.
 Codex sends rate-limit windows only while the account reports them. Every
 observation is persisted to `${XDG_CACHE_HOME:-~/.cache}/codex-statusline/usage.json`
 and reused afterwards. Inside one reset window usage only grows, so an older
-snapshot never overwrites a newer cached value.
+snapshot never overwrites a newer cached value. The footer converts Codex's
+consumed percentage to remaining quota, matching Claude's usage display.
 
 ### Customization
 

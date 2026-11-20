@@ -136,6 +136,11 @@ def resolve_usage(cache, window, incoming, now):
     return max(pct for resets, pct in candidates if (resets or 0) == newest)
 
 
+def remaining_percent(used_percent):
+    """Convert the API's consumed percentage to the remaining quota."""
+    return 100.0 - max(0.0, min(100.0, float(used_percent)))
+
+
 def bar(pct):
     pct = max(0.0, min(100.0, float(pct)))
     filled = int(round(pct * BAR_WIDTH / 100.0))
@@ -258,12 +263,13 @@ def render(state):
         if pct is None:
             children.append(text(label + " -", SUBTLE))
         else:
+            remaining = remaining_percent(pct)
             children.append(
                 row(
                     [
                         text(label, SUBTLE),
-                        bar(pct),
-                        text("{:.0f}%".format(pct), PINK),
+                        bar(remaining),
+                        text("{:.0f}%".format(remaining), PINK),
                     ],
                     gap=1,
                 )

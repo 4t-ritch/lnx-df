@@ -1,4 +1,10 @@
 if status is-interactive
+  alias music 'cd $HOME/music'
+  alias umas 'cd $HOME/umas'
+  alias videos 'cd /mnt/todo/videos'
+  alias dotfiles 'cd $HOME/dotfiles'
+  alias atomiracle 'cd $HOME/dev/atomiracle'
+
   # env STEAM_FORCE_DESKTOPUI_SCALING=1 steam
   set -gx MOZ_ENABLE_WAYLAND 1
   set -gx XDG_DATA_DIRS /var/lib/flatpak/exports/share $HOME/.local/share/flatpak/exports/share $XDG_DATA_DIRS
