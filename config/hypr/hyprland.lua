@@ -233,9 +233,12 @@ local menu = "~/.config/hypr/scripts/open-hyprlauncher.sh"
 
 -- See https://wiki.hypr.land/Configuring/Environment-variables/
 
-hl.env("XCURSOR_SIZE", 24)
+hl.env("XCURSOR_SIZE", 40)
 
-hl.env("HYPRCURSOR_SIZE", 24)
+hl.env("HYPRCURSOR_THEME", "Mita")
+hl.env("XCURSOR_THEME", "Mita")
+
+hl.env("HYPRCURSOR_SIZE", 40)
 
 hl.env("QT_QPA_PLATFORMTHEME", "gtk3")
 
@@ -811,6 +814,7 @@ hl.config({
 
 -- Autostart
 hl.on("hyprland.start", function()
+    hl.exec_cmd("sh -c 'sleep 2; hyprctl setcursor \"$HYPRCURSOR_THEME\" \"${HYPRCURSOR_SIZE:-24}\"'")
     hl.exec_cmd("~/.config/waybar/scripts/start-waybar.sh")
     hl.exec_cmd("~/.config/waybar/scripts/audio-devices.sh --restore")
     hl.exec_cmd("test -x \"" .. os.getenv("HOME") .. "/.local/bin/fcitx5-no-tray\" && \"" .. os.getenv("HOME") .. "/.local/bin/fcitx5-no-tray\"")
