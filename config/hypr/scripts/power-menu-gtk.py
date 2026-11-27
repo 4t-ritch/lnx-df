@@ -62,7 +62,7 @@ window {
 }
 
 .background-hit-area {
-  background-color: rgba(8, 10, 12, 0.28);
+  background-color: rgba(26, 27, 28, 0.70);
 }
 
 .power-menu {
@@ -73,25 +73,25 @@ window {
   min-width: 166px;
   min-height: 148px;
   padding: 24px 14px 18px 14px;
-  border-radius: 26px;
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 0;
+  border: 1px solid rgba(201, 201, 203, 0.25);
   background-image: none;
-  background-color: rgba(19, 21, 24, 0.40);
+  background-color: rgba(26, 27, 28, 0.96);
   box-shadow: none;
-  color: #f5f6f7;
+  color: #dedee0;
   text-shadow: none;
 }
 
 .power-card.selected {
-  border-color: rgba(255, 255, 255, 0.28);
-  background-color: rgba(228, 232, 236, 0.86);
-  color: #0d1013;
+  border-color: rgba(201, 201, 203, 0.70);
+  background-color: #c9c9cb;
+  color: #1a1b1c;
 }
 
 .power-card label {
   color: inherit;
-  font-family: "Inter", sans-serif;
-  font-size: 17px;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 15px;
   font-weight: 600;
 }
 """

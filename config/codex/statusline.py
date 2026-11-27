@@ -17,10 +17,18 @@ soft cyan and slate blue.
 
 import json
 import os
+from pathlib import Path
 import subprocess
 import sys
 import time
 import traceback
+
+# Both entry points are installed as symlinks into this config tree.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+try:
+    from statusline_git import STATUS_ARGS, branch_label
+finally:
+    sys.path.pop(0)
 
 URI = "ui://codex-statusline/footer"
 STATE_KEY = "com.openai/codex-statusline-state"
@@ -158,6 +166,7 @@ def git(cwd, args):
             ["git", "-C", cwd] + list(args),
             capture_output=True,
             text=True,
+            errors="replace",
             timeout=0.35,
         )
     except (OSError, subprocess.SubprocessError):
@@ -165,6 +174,10 @@ def git(cwd, args):
     if result.returncode != 0:
         return None
     return result.stdout.strip() or None
+
+
+def git_branch(cwd):
+    return branch_label(git(cwd, STATUS_ARGS))
 
 
 def repo_paths(cwd):
@@ -241,7 +254,7 @@ def render(state):
         save_cache(cache)
 
     root, toplevel = repo_paths(cwd)
-    branch = git(cwd, ["symbolic-ref", "--short", "HEAD"]) if root else None
+    branch = git_branch(cwd) if root else None
 
     children = []
     if branch:

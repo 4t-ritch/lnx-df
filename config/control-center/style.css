@@ -1,3 +1,21 @@
+/* Atomiracle desktop palette; behavior stays in the existing GTK controls. */
+@define-color cc-bg #1a1b1c;
+@define-color cc-panel #272728;
+@define-color cc-raised #343435;
+@define-color cc-text #dedee0;
+@define-color cc-secondary #c1c1c3;
+@define-color cc-muted #a9aaad;
+@define-color cc-silver #c9c9cb;
+@define-color cc-rule rgba(201, 201, 203, 0.25);
+@define-color cc-edge rgba(201, 201, 203, 0.70);
+@define-color cc-active rgba(201, 201, 203, 0.13);
+
+.control-panel,
+.control-panel * {
+  font-family: "Noto Sans", "CaskaydiaCove Nerd Font", "JetBrainsMono Nerd Font", sans-serif;
+  font-size: 13px;
+}
+
 .control-overlay-window,
 .control-backdrop {
   background: transparent;
@@ -5,28 +23,28 @@
 
 .control-window,
 .control-panel {
-  background: rgba(20, 20, 20, 0.92);
-  color: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 24px;
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.42);
+  background: @cc-bg;
+  color: @cc-text;
+  border: 1px solid @cc-rule;
+  border-radius: 0;
+  box-shadow: none;
   padding: 16px;
 }
 
 .title {
   font-size: 18px;
-  font-weight: 800;
-  color: rgba(255, 255, 255, 0.96);
+  font-weight: 600;
+  color: @cc-text;
 }
 
 .round-button {
   min-width: 46px;
   min-height: 32px;
   padding: 0 6px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 0;
+  background: @cc-panel;
+  color: @cc-text;
+  border: 1px solid @cc-rule;
   font-size: 19px;
 }
 
@@ -34,21 +52,21 @@
   min-width: 174px;
   min-height: 50px;
   padding: 7px 9px;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.86);
+  border-radius: 0;
+  border: 1px solid @cc-rule;
+  background: @cc-panel;
+  color: @cc-secondary;
 }
 
 .tile.on {
-  background: rgba(255, 255, 255, 0.32);
-  color: rgba(255, 255, 255, 0.98);
-  border-color: rgba(255, 255, 255, 0.26);
+  background: @cc-active;
+  color: @cc-text;
+  border-color: @cc-edge;
 }
 
 .tile.off {
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.54);
+  background: @cc-panel;
+  color: @cc-muted;
 }
 
 .split-tile {
@@ -56,15 +74,15 @@
 }
 
 .split-tile.on {
-  background: rgba(255, 255, 255, 0.32);
-  color: rgba(255, 255, 255, 0.98);
-  border-color: rgba(255, 255, 255, 0.26);
+  background: @cc-active;
+  color: @cc-text;
+  border-color: @cc-edge;
 }
 
 .split-tile.off {
-  background: rgba(36, 36, 36, 0.92);
-  color: rgba(255, 255, 255, 0.46);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: @cc-panel;
+  color: @cc-muted;
+  border-color: @cc-panel;
 }
 
 .split-tile-primary,
@@ -85,7 +103,7 @@
   min-width: 40px;
   padding: 0 8px;
   font-size: 20px;
-  font-weight: 900;
+  font-weight: 600;
 }
 
 .split-tile-divider {
@@ -95,14 +113,14 @@
   background: linear-gradient(
     to bottom,
     transparent,
-    rgba(255, 255, 255, 0.34),
+    @cc-rule,
     transparent
   );
 }
 
 .split-tile-primary:hover,
 .split-tile-detail:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: @cc-raised;
 }
 
 .tile-icon {
@@ -112,45 +130,46 @@
 
 .tile-title {
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .tile-subtitle {
-  font-size: 10px;
-  opacity: 0.72;
+  font-size: 12px;
+  opacity: 1;
+  color: @cc-muted;
 }
 
 .slider-card {
   padding: 10px 12px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  color: rgba(255, 255, 255, 0.92);
+  border-radius: 0;
+  background: @cc-panel;
+  border: 1px solid @cc-rule;
+  color: @cc-text;
 }
 
 scale trough {
-  min-height: 10px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.34);
+  min-height: 6px;
+  border-radius: 0;
+  background: @cc-bg;
 }
 
 scale highlight {
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.72);
+  border-radius: 0;
+  background: @cc-silver;
 }
 
 .slider-value {
   min-width: 42px;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 /* Kept: reused by per-app mute button in audio detail (app.py). */
 .media-button {
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(255, 255, 255, 0.14);
-  color: rgba(255, 255, 255, 0.92);
+  border-radius: 0;
+  border: 1px solid @cc-rule;
+  background: @cc-rule;
+  color: @cc-text;
   min-width: 44px;
   min-height: 34px;
 }
@@ -159,23 +178,23 @@ scale highlight {
 .mini-button:hover,
 .tile:hover,
 .round-button:hover {
-  background: rgba(255, 255, 255, 0.16);
+  background: @cc-raised;
 }
 
 .mini-button {
   min-height: 26px;
   padding: 3px 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  background: rgba(255, 255, 255, 0.10);
-  color: rgba(255, 255, 255, 0.90);
-  font-size: 11px;
-  font-weight: 800;
+  border-radius: 0;
+  border: 1px solid @cc-rule;
+  background: @cc-rule;
+  color: @cc-text;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .mini-button.active {
-  background: rgba(255, 255, 255, 0.24);
-  border-color: rgba(255, 255, 255, 0.28);
+  background: @cc-active;
+  border-color: @cc-edge;
 }
 
 .mini-button.icon-button {
@@ -186,42 +205,43 @@ scale highlight {
 
 .embedded-list {
   padding: 8px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0;
+  background: @cc-panel;
+  border: 1px solid @cc-rule;
 }
 
 .detail-section {
   margin-top: 4px;
   margin-bottom: 2px;
-  font-size: 11px;
-  font-weight: 900;
-  opacity: 0.72;
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 1;
+  color: @cc-muted;
 }
 
 .embedded-row {
   min-height: 38px;
   padding: 6px 10px;
-  border-radius: 12px;
+  border-radius: 0;
   border: 1px solid transparent;
   background: transparent;
-  color: rgba(255, 255, 255, 0.86);
+  color: @cc-secondary;
 }
 
 .embedded-row:hover {
-  background: rgba(255, 255, 255, 0.10);
+  background: @cc-rule;
 }
 
 .feature-switch-row,
 .mic-switch-row {
   min-height: 46px;
-  background: rgba(255, 255, 255, 0.06);
+  background: @cc-panel;
 }
 
 .embedded-row.connected-row {
-  background: rgba(255, 255, 255, 0.22);
-  border-color: rgba(255, 255, 255, 0.32);
-  color: rgba(255, 255, 255, 0.98);
+  background: @cc-active;
+  border-color: @cc-active;
+  color: @cc-text;
 }
 
 .embedded-row.connecting-row {
@@ -238,17 +258,58 @@ scale highlight {
 
 .wifi-password-card {
   padding: 10px;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.24);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0;
+  background: @cc-bg;
+  border: 1px solid @cc-rule;
 }
 
 .wifi-password-title {
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 600;
 }
 
 .wifi-password-hint {
-  font-size: 11px;
-  opacity: 0.72;
+  font-size: 12px;
+  opacity: 1;
+  color: @cc-muted;
+}
+
+/* Square focus and switch chrome keeps state visible without rounded pills. */
+.control-panel button:focus-visible {
+  outline: 1px solid @cc-edge;
+  outline-offset: -2px;
+}
+
+.control-panel switch {
+  background: @cc-bg;
+  border: 1px solid @cc-rule;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.control-panel switch:checked {
+  background: @cc-active;
+  border-color: @cc-edge;
+}
+
+.control-panel switch slider {
+  background: @cc-muted;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.control-panel switch:checked slider {
+  background: @cc-text;
+}
+
+.control-panel scale slider {
+  min-width: 8px;
+  min-height: 14px;
+  padding: 0;
+  margin: -5px 0;
+  background: @cc-text;
+  border: 1px solid @cc-edge;
+  border-radius: 0;
+  box-shadow: none;
 }

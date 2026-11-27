@@ -1,0 +1,17 @@
+[Unit]
+Description=ketai music daemon
+Requires=ketaid.socket
+After=ketaid.socket pipewire.service pipewire-pulse.service
+Wants=pipewire.service
+# Evita un bucle de reinicios si el daemon falla siempre al arrancar.
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=notify
+ExecStart=/home/ritch/.cargo/bin/ketaid
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target

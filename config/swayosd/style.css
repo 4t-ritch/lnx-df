@@ -1,0 +1,65 @@
+/* Shared Atomiracle palette for volume, brightness and media indicators. */
+window#osd {
+  font-family: "Noto Sans", sans-serif;
+  font-size: 13px;
+  color: #dedee0;
+  border: 1px solid rgba(201, 201, 203, 0.70);
+  border-radius: 0;
+  background: rgba(26, 27, 28, 0.98);
+  box-shadow: none;
+}
+
+window#osd #container {
+  margin: 12px 16px;
+}
+
+window#osd image,
+window#osd label {
+  color: #dedee0;
+}
+
+window#osd label {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+window#osd progressbar {
+  min-width: 120px;
+}
+
+window#osd progressbar:disabled,
+window#osd image:disabled {
+  opacity: 0.55;
+}
+
+window#osd progressbar,
+window#osd segmentedprogress {
+  min-height: 6px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+window#osd trough,
+window#osd segment {
+  min-height: inherit;
+  border: none;
+  border-radius: 0;
+  background: #343435;
+}
+
+window#osd progress,
+window#osd segment.active {
+  min-height: inherit;
+  border: none;
+  border-radius: 0;
+  background: #c9c9cb;
+}
+
+window#osd segment {
+  margin-left: 8px;
+}
+
+window#osd segment:first-child {
+  margin-left: 0;
+}

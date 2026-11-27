@@ -63,3 +63,7 @@ newer cached value.
 - Icons: `GIT_ICON`, `TREE_ICON`, `STAR_ICON` constants at the top.
 - Colors: `PINK`, `CYAN` and `BLUE` match the `ritch-rose` theme accents.
 - Bar width and glyphs: `BAR_WIDTH`, `BAR_FILLED`, `BAR_EMPTY`.
+
+The branch label matches the Fish prompt: `>` for commits ahead of upstream,
+`<` for commits behind, and `!` for local changes, including untracked files.
+Indicators combine in that order (for example, `main ><!`).

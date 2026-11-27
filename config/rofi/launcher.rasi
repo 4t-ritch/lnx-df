@@ -1,17 +1,17 @@
 * {
-  bg: rgba(10, 12, 14, 86%);
-  bg-panel: rgba(20, 23, 26, 92%);
-  bg-panel-strong: rgba(27, 32, 37, 96%);
-  bg-hover: rgba(255, 255, 255, 10%);
-  bg-active: rgba(255, 255, 255, 16%);
-  fg: #f3f4f6;
-  fg-muted: #b8bcc2;
-  fg-subtle: #8b9097;
-  fg-strong: #ffffff;
-  border: rgba(243, 244, 246, 30%);
-  border-soft: rgba(243, 244, 246, 14%);
+  bg: rgba(26, 27, 28, 98%);
+  bg-panel: rgba(39, 39, 40, 96%);
+  bg-panel-strong: rgba(52, 52, 53, 98%);
+  bg-hover: rgba(201, 201, 203, 13%);
+  bg-active: rgba(201, 201, 203, 13%);
+  fg: #dedee0;
+  fg-muted: #c1c1c3;
+  fg-subtle: #a9aaad;
+  fg-strong: #dedee0;
+  border: rgba(201, 201, 203, 70%);
+  border-soft: rgba(201, 201, 203, 25%);
 
-  font: "DM Mono 11";
+  font: "Noto Sans 11";
 }
 
 window {
@@ -21,7 +21,7 @@ window {
   width: 42%;
   border: 1px;
   border-color: @border;
-  border-radius: 14px;
+  border-radius: 0;
   background-color: @bg;
 }
 
@@ -57,7 +57,7 @@ entry {
   text-color: @fg;
   border: 1px;
   border-color: @border-soft;
-  border-radius: 999px;
+  border-radius: 0;
 }
 
 mode-switcher {
@@ -73,7 +73,7 @@ button {
   text-color: @fg-subtle;
   border: 1px;
   border-color: @border-soft;
-  border-radius: 999px;
+  border-radius: 0;
 }
 
 button selected {
@@ -89,7 +89,7 @@ listview {
   dynamic: true;
   scrollbar: false;
   fixed-height: false;
-  spacing: 6px;
+  spacing: 2px;
   background-color: transparent;
 }
 
@@ -97,11 +97,11 @@ element {
   orientation: horizontal;
   spacing: 12px;
   padding: 12px 14px;
-  background-color: @bg-panel;
+  background-color: transparent;
   text-color: @fg;
   border: 1px;
   border-color: transparent;
-  border-radius: 12px;
+  border-radius: 0;
 }
 
 element selected.normal,
@@ -129,7 +129,7 @@ message {
   background-color: @bg-panel;
   border: 1px;
   border-color: @border-soft;
-  border-radius: 12px;
+  border-radius: 0;
 }
 
 textbox {

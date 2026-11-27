@@ -1,0 +1,12 @@
+[Unit]
+Description=ketai music daemon sockets
+
+[Socket]
+ListenStream=%t/ketai/ctl.sock
+ListenStream=%t/ketai/viz.sock
+SocketMode=0600
+DirectoryMode=0700
+RemoveOnStop=yes
+
+[Install]
+WantedBy=sockets.target

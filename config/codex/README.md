@@ -88,3 +88,7 @@ CODEX_RELEASE=0.170.0 CODEX_NON_INTERACTIVE=1 sh -c 's=$(curl -fsSL https://chat
 Remove `tui.status_line_provider` (or set it to `"default"`). A background
 daemon on a different version shows a startup warning; manage it with
 `/daemon`.
+
+The branch label matches the Fish prompt: `>` for commits ahead of upstream,
+`<` for commits behind, and `!` for local changes, including untracked files.
+Indicators combine in that order (for example, `main ><!`).

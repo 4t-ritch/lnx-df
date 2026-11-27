@@ -13,9 +13,17 @@ cached value.
 
 import json
 import os
+from pathlib import Path
 import subprocess
 import sys
 import time
+
+# Both entry points are installed as symlinks into this config tree.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+try:
+    from statusline_git import STATUS_ARGS, branch_label
+finally:
+    sys.path.pop(0)
 
 BAR_WIDTH = 10
 BAR_FILLED = "\u25b0"
@@ -135,6 +143,7 @@ def git_output(cwd, *args):
             ["git", "-C", cwd] + list(args),
             capture_output=True,
             text=True,
+            errors="replace",
             timeout=2,
         )
     except (OSError, subprocess.SubprocessError):
@@ -145,7 +154,7 @@ def git_output(cwd, *args):
 
 
 def git_branch(cwd):
-    return git_output(cwd, "branch", "--show-current")
+    return branch_label(git_output(cwd, *STATUS_ARGS))
 
 
 def repo_root(cwd):

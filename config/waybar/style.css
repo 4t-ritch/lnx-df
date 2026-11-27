@@ -1,92 +1,116 @@
+/* Atomiracle: charcoal chrome and silver rules with readable sans-serif text.
+ * Presentation only: the existing module layout and actions stay unchanged.
+ */
+@define-color ink #1a1b1c;
+@define-color panel #272728;
+@define-color raised #343435;
+@define-color paper #dedee0;
+@define-color secondary #c1c1c3;
+@define-color muted #a9aaad;
+@define-color rule rgba(201, 201, 203, 0.25);
+@define-color edge rgba(201, 201, 203, 0.70);
+
 * {
-  font-family: "DM Mono", "CaskaydiaCove Nerd Font", "JetBrainsMono Nerd Font", monospace;
-  font-size: 11px;
-  font-weight: 700;
+  font-family: "Noto Sans", "CaskaydiaCove Nerd Font", "JetBrainsMono Nerd Font", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
   min-height: 0;
+  border-radius: 0;
+  text-shadow: none;
 }
 
 window#waybar {
-  background: transparent;
-  color: #e8e8e8;
+  color: @paper;
+  background: rgba(26, 27, 28, 0.94);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid @rule;
 }
 
 tooltip {
-  background: rgba(18, 18, 24, 0.94);
-  color: #eeeeee;
-  border: 1px solid rgba(230, 230, 230, 0.45);
-  border-radius: 9px;
+  color: @paper;
+  background: @ink;
+  border: 1px solid @edge;
+  border-radius: 0;
 }
 
+tooltip label {
+  font-family: "Noto Sans", sans-serif;
+  font-size: 13px;
+  padding: 8px 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* Separate workspaces from the app without closing the bar's outer edge. */
 #workspaces {
-  margin: 4px 0;
-  padding: 3px 6px;
-  color: #9a9a9a;
-  background: rgba(24, 24, 32, 0.86);
-  border: 1px solid rgba(230, 230, 230, 0.32);
-  border-radius: 999px;
+  margin: 3px 0;
+  padding: 0 3px;
+  background: transparent;
+  border: none;
+  border-right: 1px solid @rule;
 }
 
 #workspaces button {
-  margin: 0 2px;
+  min-width: 18px;
+  margin: 2px 1px;
   padding: 0 7px;
+  color: @secondary;
+  background: transparent;
+  border: 1px solid transparent;
   box-shadow: none;
-  border-radius: 999px;
 }
 
 #workspaces button.empty {
-  color: #6a6a6a;
+  color: #77797c;
 }
 
 #workspaces button.visible {
-  color: #dadada;
+  color: @paper;
+  border-bottom-color: @rule;
 }
 
 #workspaces button.active {
-  color: #111111;
-  background: #dcdcdc;
-  border-radius: 999px;
+  color: @paper;
+  background: rgba(201, 201, 203, 0.13);
+  border-color: @edge;
+}
+
+#workspaces button:hover {
+  color: @paper;
+  background: @raised;
+  border-color: @edge;
+  box-shadow: none;
 }
 
 #workspaces button.urgent {
-  color: #111111;
-  background: #f0f0f0;
+  color: @ink;
+  background: @paper;
+  border-color: @paper;
 }
 
-#workspaces:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.14);
-}
-
-/* Barra del monitor HDMI (TV): compacta */
-window.HDMI-A-1 #workspaces {
-  margin: 3px 0;
-  padding: 2px 5px;
-}
-
-window.HDMI-A-1 #workspaces button {
-  padding: 0 4px;
-}
-
+/* Internal dividers separate modules without framing the bar's outer edges. */
 #window,
 #tray,
 #custom-keyboard,
 #custom-notification,
-#custom-control-center,
-#custom-power,
 #clock {
-  margin: 4px 0;
+  margin: 5px 0;
   padding: 0 11px;
-  color: #e8e8e8;
-  background: rgba(24, 24, 32, 0.86);
-  border: 1px solid rgba(230, 230, 230, 0.32);
-  border-radius: 999px;
+  color: @secondary;
+  background: transparent;
+  border: none;
+  border-left: 1px solid @rule;
 }
 
 #window {
-  margin-left: 6px;
-  min-width: 0;
-  padding: 0 11px;
-  color: #f2f2f2;
+  margin-left: 0;
+  padding-left: 0;
+  color: @paper;
+  border-left: none;
+  letter-spacing: 0;
 }
 
 window#waybar.empty #window {
@@ -96,72 +120,59 @@ window#waybar.empty #window {
 }
 
 #clock {
-  margin-right: 6px;
-  color: #f2f2f2;
+  color: @paper;
+  letter-spacing: 0;
 }
 
 #tray {
   padding: 0 10px;
 }
 
-#custom-control-center,
+#tray > widget {
+  min-width: 18px;
+}
+
+/* Technical readouts retain monospace and Nerd Font icon fallbacks. */
 #custom-keyboard,
-#custom-power {
-  min-width: 42px;
-  padding: 0 10px;
-}
-
-#custom-control-center,
-#custom-keyboard {
-  color: #eeeeee;
-}
-
-#custom-keyboard.jp {
-  color: #f2df8c;
-}
-
-
-
-/* Action badges */
-#custom-control-center,
 #custom-notification {
+  font-family: "Noto Sans Mono", "CaskaydiaCove Nerd Font", "JetBrainsMono Nerd Font", monospace;
   min-width: 26px;
   padding: 0 10px;
-  color: #eeeeee;
 }
 
-#custom-control-center:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.16);
+#custom-keyboard:hover,
+#custom-notification:hover {
+  color: @paper;
+  background: @raised;
+  box-shadow: inset 0 -1px @edge;
 }
 
-/* No notifications */
-#custom-notification.none {
-  color: #8b8b8b;
-}
-
-/* Has notifications */
-#custom-notification.notification {
-  color: #f2f2f2;
-  background: rgba(34, 34, 46, 0.92);
-  border-color: rgba(245, 245, 245, 0.46);
-}
-
-/* Do Not Disturb */
+/* Muted amber is reserved for mode changes, not decoration. */
+#custom-keyboard.jp,
 #custom-notification.dnd-none,
 #custom-notification.dnd-notification {
-  color: #f2df8c;
-  background: rgba(36, 32, 22, 0.92);
-  border-color: rgba(242, 223, 140, 0.48);
+  color: #d6c8a5;
 }
 
-/* DND + notifications */
+#custom-notification.none {
+  color: @muted;
+}
+
+#custom-notification.notification {
+  color: @paper;
+  background: @raised;
+}
+
 #custom-notification.dnd-notification {
-  color: #ffd972;
+  background: #343129;
 }
 
-/* Hover */
-#custom-notification:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.14);
+/* Preserve the TV output's more compact workspace controls. */
+window.HDMI-A-1 #workspaces {
+  padding: 0 2px;
+}
+
+window.HDMI-A-1 #workspaces button {
+  min-width: 14px;
+  padding: 0 4px;
 }

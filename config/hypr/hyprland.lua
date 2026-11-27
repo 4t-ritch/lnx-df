@@ -282,9 +282,9 @@ hl.env("XMODIFIERS", "@im=fcitx")
 
 hl.config({
     general = {
-        gaps_in = 5,
-        gaps_out = 20,
-        border_size = 2,
+        gaps_in = 4,
+        gaps_out = 8,
+        border_size = 1,
         -- https://wiki.hypr.land/Configuring/Variables/#variable-types for info about colors
         -- Set to true enable resizing windows by clicking and dragging on borders and gaps
         resize_on_border = false,
@@ -293,8 +293,8 @@ hl.config({
         layout = "dwindle",
         --layout = scrolling
         col = {
-            active_border = { colors = { "rgba(FDFDFDaa)", "rgba(898989ee)" }, angle = 45 },
-            inactive_border = "rgba(595959aa)",
+            active_border = "rgba(c9c9cbb3)",
+            inactive_border = "rgba(c9c9cb40)",
         },
     },
 })
@@ -313,13 +313,13 @@ hl.config({
 
 hl.config({
     decoration = {
-        rounding = 10,
+        rounding = 0,
         rounding_power = 2,
         -- Change transparency of focused and unfocused windows
         active_opacity = 1.0,
         inactive_opacity = 1.0,
         shadow = {
-            enabled = true,
+            enabled = false,
             range = 4,
             render_power = 3,
             color = "rgba(1a1a1aee)",
@@ -608,11 +608,47 @@ hl.bind(mainMod .. " + " .. "SHIFT" .. " + " .. "S", hl.dsp.window.move({ worksp
 
 hl.bind(mainMod .. " + " .. "D", hl.dsp.window.move({ workspace = "e+0" }))
 
--- Scroll only through the workspaces of the focused monitor with mainMod + scroll
+-- PiP scroll begin
+-- Super+wheel over the focused PiP resizes it; elsewhere, cycle workspaces.
+local function pip_scroll(width_step, workspace_direction)
+    local window = hl.get_active_window()
+    local cursor = hl.get_cursor_pos()
+    local is_pip = window and window.class == "brave-browser"
+        and window.title:match("^[Pp]icture[ -]in[ -][Pp]icture$")
+        and window.floating and window.mapped and window.visible
+    if not is_pip or cursor.x < window.at.x or cursor.y < window.at.y
+        or cursor.x >= window.at.x + window.size.x
+        or cursor.y >= window.at.y + window.size.y then
+        hl.dispatch(hl.dsp.exec_cmd("~/.config/hypr/scripts/ws-cycle.sh " .. workspace_direction))
+        return
+    end
 
-hl.bind(mainMod .. " + " .. "mouse_down", hl.dsp.exec_cmd("~/.config/hypr/scripts/ws-cycle.sh next"))
+    local monitor = hl.get_active_monitor()
+    local reserved = monitor.reserved
+    local left = monitor.x + reserved.left + 8
+    local top = monitor.y + reserved.top + 8
+    local right = monitor.x + monitor.width - reserved.right - 8
+    local bottom = monitor.y + monitor.height - reserved.bottom - 8
+    local ratio = window.size.x / window.size.y
+    local maximum = math.floor(math.min(right - left, (bottom - top) * ratio))
+    local minimum = math.min(240, maximum)
+    local width = math.max(minimum, math.min(maximum, window.size.x + width_step))
+    local height = math.floor(width / ratio + 0.5)
+    if width == window.size.x and height == window.size.y then
+        return
+    end
 
-hl.bind(mainMod .. " + " .. "mouse_up", hl.dsp.exec_cmd("~/.config/hypr/scripts/ws-cycle.sh prev"))
+    -- Anchor the lower-right corner, while keeping the video inside its monitor.
+    local x = math.max(left, math.min(right - width, window.at.x + window.size.x - width))
+    local y = math.max(top, math.min(bottom - height, window.at.y + window.size.y - height))
+    local target = "address:" .. window.address
+    hl.dispatch(hl.dsp.window.resize({ window = target, x = width, y = height, relative = false }))
+    hl.dispatch(hl.dsp.window.move({ window = target, x = x, y = y, relative = false }))
+end
+
+hl.bind(mainMod .. " + mouse_up", function() pip_scroll(48, "prev") end)
+hl.bind(mainMod .. " + mouse_down", function() pip_scroll(-48, "next") end)
+-- PiP scroll end
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
 
@@ -724,6 +760,17 @@ hl.window_rule({
         pin = false,
     },
     no_focus = true,
+})
+
+-- Keep Brave's picture-in-picture video out of the tiling layout.
+hl.window_rule({
+    name = "brave-picture-in-picture",
+    match = {
+        class = "^brave-browser$",
+        title = "^[Pp]icture[ -]in[ -][Pp]icture$",
+    },
+    float = true,
+    size = { 480, 270 },
 })
 
 -- Control center floating panel

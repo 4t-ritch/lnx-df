@@ -44,6 +44,16 @@ window {
   background-color: transparent;
 }
 
+tooltip {
+  padding: 6px 9px;
+  border: 1px solid rgba(201, 201, 203, 0.25);
+  border-radius: 0;
+  background-color: #272728;
+  color: #dedee0;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 13px;
+}
+
 .background-hit-area {
   background-color: rgba(0, 0, 0, 0.01);
 }
@@ -52,11 +62,13 @@ window {
   min-width: 760px;
   min-height: 540px;
   padding: 18px;
-  border-radius: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background-color: rgba(20, 20, 20, 0.28);
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.92);
+  border-radius: 0;
+  border: 1px solid rgba(201, 201, 203, 0.25);
+  background-color: #1a1b1c;
+  color: #dedee0;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .picker-panel.clipboard-panel {
@@ -66,25 +78,25 @@ window {
 .search-entry {
   min-height: 42px;
   padding: 0 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background-color: rgba(20, 20, 20, 0.28);
-  color: rgba(255, 255, 255, 0.92);
-  font-family: "Inter", sans-serif;
+  border-radius: 0;
+  border: 1px solid rgba(201, 201, 203, 0.25);
+  background-color: #272728;
+  color: #dedee0;
+  font-family: "Noto Sans", sans-serif;
   font-size: 14px;
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.10);
+  font-weight: 500;
 }
 
 .search-entry:focus {
-  border-color: rgba(255, 255, 255, 0.32);
-  background-color: rgba(20, 20, 20, 0.34);
+  border-color: rgba(201, 201, 203, 0.70);
+  background-color: #272728;
 }
 
 .content-frame {
   margin-top: 12px;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  background-color: rgba(20, 20, 20, 0.20);
+  border-radius: 0;
+  border: 1px solid rgba(201, 201, 203, 0.25);
+  background-color: #272728;
 }
 
 .content-frame.clipboard-frame {
@@ -111,40 +123,42 @@ window {
 .clipboard-row {
   margin: 5px 6px;
   padding: 10px 12px;
-  border-radius: 18px;
-  border: 1px solid transparent;
-  background-color: transparent;
+  border-radius: 0;
+  border: 1px solid rgba(201, 201, 203, 0.25);
+  background-color: #272728;
   transition: none;
 }
 
 .clipboard-row:hover {
-  border-color: rgba(255, 255, 255, 0.24);
-  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(201, 201, 203, 0.70);
+  background-color: #343435;
 }
 
 .clipboard-row:selected {
-  border-color: rgba(255, 255, 255, 0.16);
-  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(201, 201, 203, 0.25);
+  background-color: #343435;
 }
 
 .clipboard-preview {
   min-width: 112px;
   min-height: 63px;
-  border-radius: 16px;
+  border-radius: 0;
+  border: 1px solid rgba(201, 201, 203, 0.25);
+  background-color: #1a1b1c;
 }
 
 .clipboard-primary {
-  color: rgba(255, 255, 255, 0.92);
-  font-family: "Inter", sans-serif;
+  color: #dedee0;
+  font-family: "Noto Sans", sans-serif;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .clipboard-secondary {
-  color: rgba(255, 255, 255, 0.60);
-  font-family: "Inter", sans-serif;
-  font-size: 12px;
-  font-weight: 600;
+  color: #c1c1c3;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .clipboard-delete-button {
@@ -152,27 +166,27 @@ window {
   min-height: 38px;
   margin-left: 8px;
   padding: 0;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background-color: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 16px;
-  font-weight: 800;
-  box-shadow: none;
+  border-radius: 0;
+  border: 1px solid rgba(201, 201, 203, 0.25);
+  background-color: #272728;
+  color: #c1c1c3;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .clipboard-delete-button:hover,
 .clipboard-delete-button:focus {
-  border-color: rgba(255, 255, 255, 0.26);
-  background-color: rgba(255, 255, 255, 0.14);
-  color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(201, 201, 203, 0.70);
+  background-color: #343435;
+  color: #dedee0;
 }
 
 .empty-label {
-  color: rgba(255, 255, 255, 0.60);
-  font-family: "Inter", sans-serif;
-  font-size: 15px;
-  font-weight: 700;
+  color: #a9aaad;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .emoji-button {
@@ -180,10 +194,10 @@ window {
   min-height: 52px;
   margin: 4px;
   padding: 0;
-  border-radius: 18px;
-  border: 1px solid transparent;
-  background-color: rgba(20, 20, 20, 0.24);
-  color: rgba(255, 255, 255, 0.92);
+  border-radius: 0;
+  border: 1px solid rgba(201, 201, 203, 0.25);
+  background-color: #272728;
+  color: #dedee0;
   font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
   font-size: 28px;
   box-shadow: none;
@@ -200,15 +214,44 @@ window {
   min-height: 7px;
   margin-right: 9px;
   margin-bottom: 7px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.56);
-  background-color: rgba(130, 180, 255, 0.90);
+  border-radius: 0;
+  border: 1px solid rgba(201, 201, 203, 0.70);
+  background-color: #c9c9cb;
 }
 
 .emoji-button:hover,
 .emoji-button:focus {
-  border-color: rgba(255, 255, 255, 0.28);
-  background-color: rgba(255, 255, 255, 0.16);
+  border-color: rgba(201, 201, 203, 0.70);
+  background-color: #343435;
+}
+
+.emoji-flow flowboxchild,
+.variant-flow flowboxchild {
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  outline: none;
+  box-shadow: none;
+}
+
+.emoji-button,
+.variant-button,
+.category-button {
+  background-image: none;
+  outline: none;
+  transition: none;
+}
+
+.emoji-flow flowboxchild:focus .emoji-button,
+.emoji-flow flowboxchild:selected .emoji-button,
+.variant-flow flowboxchild:focus .variant-button,
+.variant-flow flowboxchild:selected .variant-button,
+.emoji-button:focus,
+.variant-button:focus,
+.category-button:focus {
+  border-color: #c9c9cb;
+  background-color: #343435;
+  box-shadow: inset 0 0 0 1px rgba(201, 201, 203, 0.70);
 }
 
 scrollbar {
@@ -239,22 +282,19 @@ scrollbar slider {
 .category-bar {
   margin: 10px 52px 0 52px;
   padding: 6px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background-color: rgba(255, 255, 255, 0.08);
-  box-shadow:
-    inset 0 1px rgba(255, 255, 255, 0.16),
-    0 18px 36px rgba(0, 0, 0, 0.24);
+  border-radius: 0;
+  border: 1px solid rgba(201, 201, 203, 0.25);
+  background-color: #1a1b1c;
 }
 
 .category-button {
   min-width: 42px;
   min-height: 38px;
   padding: 0 8px;
-  border-radius: 999px;
-  border: 1px solid transparent;
+  border-radius: 0;
+  border: 1px solid rgba(201, 201, 203, 0.25);
   background-color: transparent;
-  color: rgba(255, 255, 255, 0.78);
+  color: #c1c1c3;
   font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
   font-size: 18px;
   box-shadow: none;
@@ -262,27 +302,26 @@ scrollbar slider {
 
 .category-button:hover,
 .category-button.selected-category {
-  border-color: rgba(255, 255, 255, 0.20);
-  background-color: rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.96);
+  border-color: rgba(201, 201, 203, 0.70);
+  background-color: #343435;
+  color: #dedee0;
 }
 
 .category-button:disabled {
   opacity: 0.30;
-  color: rgba(255, 255, 255, 0.34);
+  color: #a9aaad;
 }
 
 popover.variant-popover {
-  border-radius: 22px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background-color: rgba(20, 20, 20, 0.86);
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.42);
+  border-radius: 0;
+  border: 1px solid rgba(201, 201, 203, 0.25);
+  background-color: #1a1b1c;
 }
 
 .variant-box {
   padding: 10px;
-  border-radius: 20px;
-  background-color: rgba(20, 20, 20, 0.86);
+  border-radius: 0;
+  background-color: #1a1b1c;
 }
 
 .variant-flow {
@@ -294,18 +333,18 @@ popover.variant-popover {
   min-height: 50px;
   margin: 2px;
   padding: 0;
-  border-radius: 16px;
-  border: 1px solid transparent;
-  background-color: rgba(255, 255, 255, 0.07);
-  color: rgba(255, 255, 255, 0.94);
+  border-radius: 0;
+  border: 1px solid rgba(201, 201, 203, 0.25);
+  background-color: #272728;
+  color: #dedee0;
   font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
   font-size: 28px;
 }
 
 .variant-button:hover,
 .variant-button:focus {
-  border-color: rgba(255, 255, 255, 0.30);
-  background-color: rgba(255, 255, 255, 0.16);
+  border-color: rgba(201, 201, 203, 0.70);
+  background-color: #343435;
 }
 """
 
@@ -556,16 +595,10 @@ class ImagePreview(Gtk.DrawingArea):
     def on_draw(self, _widget: Gtk.Widget, cr) -> bool:
         width = self.get_allocated_width()
         height = self.get_allocated_height()
-        radius = 14
-
         cr.new_path()
-        cr.arc(width - radius, radius, radius, -math.pi / 2, 0)
-        cr.arc(width - radius, height - radius, radius, 0, math.pi / 2)
-        cr.arc(radius, height - radius, radius, math.pi / 2, math.pi)
-        cr.arc(radius, radius, radius, math.pi, 3 * math.pi / 2)
-        cr.close_path()
+        cr.rectangle(0, 0, width, height)
 
-        cr.set_source_rgba(0.08, 0.08, 0.08, 0.38)
+        cr.set_source_rgb(26 / 255, 27 / 255, 28 / 255)
         cr.fill_preserve()
 
         cr.save()
@@ -578,13 +611,9 @@ class ImagePreview(Gtk.DrawingArea):
         cr.restore()
 
         cr.new_path()
-        cr.arc(width - radius, radius, radius, -math.pi / 2, 0)
-        cr.arc(width - radius, height - radius, radius, 0, math.pi / 2)
-        cr.arc(radius, height - radius, radius, math.pi / 2, math.pi)
-        cr.arc(radius, radius, radius, math.pi, 3 * math.pi / 2)
-        cr.close_path()
-        cr.set_line_width(1.2)
-        cr.set_source_rgba(0.86, 0.88, 0.90, 0.34)
+        cr.rectangle(0.5, 0.5, width - 1, height - 1)
+        cr.set_line_width(1)
+        cr.set_source_rgba(201 / 255, 201 / 255, 203 / 255, 0.25)
         cr.stroke()
 
         return False
